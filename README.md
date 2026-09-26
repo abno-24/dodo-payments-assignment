@@ -1,6 +1,6 @@
 # Dodo Checkout — Embeddable Checkout Assignment
 
-A tiny embeddable checkout: a drop-in SDK script, a hosted checkout app that runs inside an iframe, and a demo store showing it all working together.
+A tiny embeddable checkout: a drop-in SDK script, a hosted checkout app that runs inside an iframe, and a dodo store showing it all working together.
 
 **Live demo:** https://dodo-store-site.vercel.app
 **Checkout app (hosted separately):** https://dodo-checkout-app-iota.vercel.app
@@ -15,7 +15,7 @@ Test cards:
 
 ## How to run it locally
 
-The project has three parts, each in its own folder: `sdk`, `checkout-app`, `demo-site`.
+The project has three parts, each in its own folder: `sdk`, `checkout-app`, `dodo-store`.
 
 ```bash
 # 1. Build the SDK
@@ -23,7 +23,7 @@ cd sdk
 npm install
 npm run build              # outputs sdk/dist/index.js
 
-# 2. Copy the built SDK into the demo site (demo-site "hosts" the script)
+# 2. Copy the built SDK into the dodo store site (dodo-store "hosts" the script)
 cp dist/index.js ../dodo-store/public/dodo-checkout.js
 
 # 3. Run the checkout app
@@ -31,13 +31,13 @@ cd ../checkout-app
 npm install
 npm run dev                 # runs on http://localhost:5173
 
-# 4. In a separate terminal, run the demo site
+# 4. In a separate terminal, run the dodo store site
 cd ../dodo-store
 npm install
 npm run dev                  # runs on http://localhost:5174
 ```
 
-Open the demo site URL, click **Buy now**, and try the test cards above.
+Open the dodo store site URL, click **Buy now**, and try the test cards above.
 
 > Note: `sdk/src/index.ts` has a `CHECKOUT_URL` constant pointing at the checkout app's URL. It's currently set to the deployed production URL. If running fully locally, change it to `http://localhost:5173`, rebuild, and re-copy into `dodo-store/public/`.
 
