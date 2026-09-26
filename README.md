@@ -32,14 +32,14 @@ npm install
 npm run dev                 # runs on http://localhost:5173
 
 # 4. In a separate terminal, run the demo site
-cd ../demo-site
+cd ../dodo-store
 npm install
 npm run dev                  # runs on http://localhost:5174
 ```
 
 Open the demo site URL, click **Buy now**, and try the test cards above.
 
-> Note: `sdk/src/index.ts` has a `CHECKOUT_URL` constant pointing at the checkout app's URL. It's currently set to the deployed production URL. If running fully locally, change it to `http://localhost:5173`, rebuild, and re-copy into `demo-site/public/`.
+> Note: `sdk/src/index.ts` has a `CHECKOUT_URL` constant pointing at the checkout app's URL. It's currently set to the deployed production URL. If running fully locally, change it to `http://localhost:5173`, rebuild, and re-copy into `dodo-store/public/`.
 
 ---
 
