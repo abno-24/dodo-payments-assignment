@@ -1,5 +1,5 @@
 (function () {
-  const CHECKOUT_URL = "http://localhost:5173";
+  const CHECKOUT_URL = "https://dodo-checkout-app-iota.vercel.app/";
 
   type CheckoutMessage =
     | { type: "READY" }

@@ -1,6 +1,6 @@
 "use strict";
 (function () {
-    const CHECKOUT_URL = "http://localhost:5173";
+    const CHECKOUT_URL = "https://dodo-checkout-app-iota.vercel.app/";
     const READY_TIMEOUT_MS = 8000;
     const TRANSITION_MS = 200;
     let isOpen = false;
