@@ -20,6 +20,7 @@ declare global {
 
 function App() {
   const [logs, setLogs] = useState<LogEntry[]>([]);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
   function addLog(message: string) {
     setLogs((prev) => [
@@ -30,11 +31,12 @@ function App() {
 
   function handleBuy() {
     addLog("Open() called");
+    setIsCheckoutOpen(true);
     window.DodoCheckout.open({
       productId: "prod_123",
       onSuccess: ({ sessionId }) => addLog(`onSuccess — sessionId: ${sessionId}`),
-      onClose: ({ reason }) => addLog(`onClose — reason: ${reason}`),
-      onError: ({ code, message }) => addLog(`onError — ${code}: ${message}`),
+      onClose: ({ reason }) => { addLog(`onClose — reason: ${reason}`); setIsCheckoutOpen(false); },
+      onError: ({ code, message }) => { addLog(`onError — ${code}: ${message}`); setIsCheckoutOpen(false); },
     })
   }
 
@@ -52,9 +54,10 @@ function App() {
         </div>
         <button
           onClick={handleBuy}
-          className="rounded-lg bg-gray-900 text-white text-sm font-medium py-2.5 hover:bg-gray-800 transition-colors"
+          disabled={isCheckoutOpen}
+          className="rounded-lg bg-gray-900 text-white text-sm font-medium py-2.5 hover:bg-gray-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          Buy now
+          {isCheckoutOpen ? "Checkout open…" : "Buy now"}
         </button>
       </div>
 

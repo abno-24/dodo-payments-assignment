@@ -37,11 +37,11 @@ function App() {
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") handleClose();
+      if (e.key === "Escape" && !isSubmitting) handleClose();
     }
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [isSubmitting]);
 
   function handleClose() {
     sendToParent({ type: "CLOSED", reason: "user_closed" })

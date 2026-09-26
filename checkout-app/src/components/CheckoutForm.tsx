@@ -26,7 +26,7 @@ export function CheckoutForm({ product, isSubmitting, paymentError, onSubmit, on
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col" role="dialog" aria-modal="true" aria-label="Checkout">
       <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
         <div>
           <p className="text-sm text-gray-500">{product.name}</p>
@@ -36,8 +36,9 @@ export function CheckoutForm({ product, isSubmitting, paymentError, onSubmit, on
         </div>
         <button
           onClick={onClose}
+          disabled={isSubmitting}
           aria-label="Close Checkout"
-          className="h-8 w-8 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+          className="h-8 w-8 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-700 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
         >
           ✕
         </button>
@@ -45,7 +46,7 @@ export function CheckoutForm({ product, isSubmitting, paymentError, onSubmit, on
 
       <form onSubmit={handleSubmit} className="flex-1 flex flex-col gap-4 px-6 py-6">
         {paymentError && (
-          <div className="rounded-lg bg-red-50 text-red-700 text-sm px-3 py-2" role="alert">
+          <div className="rounded-lg bg-red-50 text-red-700 text-sm px-3 py-2 animate-[fadeIn_150ms_ease]" role="alert">
             {paymentError}
           </div>
         )}
@@ -55,6 +56,7 @@ export function CheckoutForm({ product, isSubmitting, paymentError, onSubmit, on
           <input
             type="email"
             required
+            autoFocus
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"

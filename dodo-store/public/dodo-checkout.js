@@ -2,7 +2,31 @@
 (function () {
     const CHECKOUT_URL = "http://localhost:5173";
     const READY_TIMEOUT_MS = 8000;
+    const TRANSITION_MS = 200;
     let isOpen = false;
+    function ensureStylesInjected() {
+        if (document.getElementById("dodo-checkout-styles"))
+            return;
+        const style = document.createElement("style");
+        style.id = "dodo-checkout-styles";
+        style.textContent = `
+      [data-dodo-checkout-overlay] {
+        opacity: 0;
+        transition: opacity ${TRANSITION_MS}ms ease;
+      }
+      [data-dodo-checkout-overlay][data-visible="true"] {
+        opacity: 1;
+      }
+      [data-dodo-checkout-overlay] iframe {
+        transform: scale(0.96);
+        transition: transform ${TRANSITION_MS}ms ease;
+      }
+      [data-dodo-checkout-overlay][data-visible="true"] iframe {
+        transform: scale(1);
+      }
+    `;
+        document.head.appendChild(style);
+    }
     function open(options) {
         var _a;
         if (isOpen) {
@@ -14,7 +38,9 @@
             return;
         }
         isOpen = true;
+        ensureStylesInjected();
         const checkoutOrigin = new URL(CHECKOUT_URL).origin;
+        const previouslyFocusedElement = document.activeElement;
         const overlay = document.createElement("div");
         overlay.setAttribute("data-dodo-checkout-overlay", "");
         Object.assign(overlay.style, {
@@ -41,7 +67,14 @@
         overlay.appendChild(iframe);
         document.body.appendChild(overlay);
         document.body.style.overflow = "hidden";
+        requestAnimationFrame(() => {
+            overlay.setAttribute("data-visible", "true");
+        });
+        iframe.addEventListener("load", () => {
+            iframe.focus();
+        });
         let readyReceived = false;
+        let isSubmittingPayment = false;
         const readyTimeoutId = window.setTimeout(() => {
             var _a;
             if (!readyReceived) {
@@ -73,13 +106,26 @@
                     break;
             }
         }
+        function handleKeyDown(event) {
+            var _a;
+            if (event.key === "Escape" && !isSubmittingPayment) {
+                (_a = options.onClose) === null || _a === void 0 ? void 0 : _a.call(options, { reason: "user_closed" });
+                cleanup();
+            }
+        }
         window.addEventListener("message", handleMessage);
+        window.addEventListener("keydown", handleKeyDown);
         function cleanup() {
             window.clearTimeout(readyTimeoutId);
             window.removeEventListener("message", handleMessage);
-            overlay.remove();
-            document.body.style.overflow = "";
+            window.removeEventListener("keydown", handleKeyDown);
+            overlay.setAttribute("data-visible", "false");
+            window.setTimeout(() => {
+                overlay.remove();
+                document.body.style.overflow = "";
+            }, TRANSITION_MS);
             isOpen = false;
+            previouslyFocusedElement === null || previouslyFocusedElement === void 0 ? void 0 : previouslyFocusedElement.focus();
         }
     }
     window.DodoCheckout = { open };
