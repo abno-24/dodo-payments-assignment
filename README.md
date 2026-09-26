@@ -24,7 +24,7 @@ npm install
 npm run build              # outputs sdk/dist/index.js
 
 # 2. Copy the built SDK into the demo site (demo-site "hosts" the script)
-cp dist/index.js ../demo-site/public/dodo-checkout.js
+cp dist/index.js ../dodo-store/public/dodo-checkout.js
 
 # 3. Run the checkout app
 cd ../checkout-app
